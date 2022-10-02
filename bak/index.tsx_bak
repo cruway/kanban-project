@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import App from './App.tsx_bak';
 import {RecoilRoot} from "recoil";
 import {createGlobalStyle, ThemeProvider} from "styled-components";
 import reset from "styled-reset";
@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 300;
     font-family: 'Source Sans Pro', sans-serif;
     background-color: ${props => props.theme.bgColor};
-    color: black;
+    color: ${props => props.theme.textColor};
     line-height: 1.2;
   }
   a {
