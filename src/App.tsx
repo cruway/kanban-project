@@ -3,6 +3,11 @@ import styled from "styled-components";
 import {toDoState} from "./atoms";
 import {useRecoilState} from "recoil";
 import Board from "./Components/Board";
+import React from "react";
+
+const Title = styled.div`
+  margin: 10px;
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,6 +61,7 @@ function App() {
     };
     return (
         <DragDropContext onDragEnd={onDragEnd}>
+            <Title>kuru kanban</Title>
             <Wrapper>
                 <Boards>
                     {Object.keys(toDos).map(boardId => (
