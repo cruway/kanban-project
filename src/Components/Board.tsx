@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {useForm} from "react-hook-form";
 import {ITodo, toDoState} from "../atoms";
 import {useSetRecoilState} from "recoil";
+import {FormEvent} from "react";
 
 const Wrapper = styled.div`
   width: 300px;
@@ -16,6 +17,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h2`
+  position: relative;
   text-align: center;
   font-weight: 600;
   margin-bottom: 10px;
@@ -25,6 +27,15 @@ const Title = styled.h2`
 const AddText = styled.input`
   border-radius: 5px;
   padding: 10px;
+`;
+
+const DeleteBtn = styled.button`
+  cursor: pointer;
+  background: none;
+  border: none;
+  position: absolute;
+  right: 8px;
+  top: -1px;
 `;
 
 interface IAreaProps {
@@ -58,6 +69,13 @@ interface IForm {
 function Board({toDos, boardId}:IBoardProps) {
     const setToDos = useSetRecoilState(toDoState);
     const { register, setValue, handleSubmit } = useForm<IForm>();
+    const onClick = (event: FormEvent<HTMLButtonElement>) => {
+        setToDos((prevToDos) => {
+           const copyToDos = { ...prevToDos };
+           delete copyToDos[event.currentTarget.value];
+           return { ...copyToDos };
+        });
+    };
     const onValid = ({ toDo }:IForm) => {
         const newToDo = {
             id: Date.now(),
@@ -76,7 +94,12 @@ function Board({toDos, boardId}:IBoardProps) {
     }
     return (
         <Wrapper>
-            <Title>{boardId}</Title>
+            <Title>
+                <span>{boardId}</span>
+                <DeleteBtn value={boardId} onClick={onClick}>
+                    ❌
+                </DeleteBtn>
+            </Title>
             <Form onSubmit={handleSubmit(onValid)}>
               <AddText
                   {...register("toDo", { required: true })}
