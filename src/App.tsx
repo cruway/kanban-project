@@ -4,9 +4,12 @@ import {toDoState} from "./atoms";
 import {useRecoilState} from "recoil";
 import Board from "./Components/Board";
 import React from "react";
+import AddBoard from "./Components/AddBoard";
 
 const Title = styled.div`
   margin: 10px;
+  font-size: 20px;
+  font-weight: 600;
 `;
 
 const Wrapper = styled.div`
@@ -16,7 +19,7 @@ const Wrapper = styled.div`
   margin: 0 auto;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 50vh;
 `;
 
 const Boards = styled.div`
@@ -62,6 +65,7 @@ function App() {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Title>kuru kanban</Title>
+            <AddBoard />
             <Wrapper>
                 <Boards>
                     {Object.keys(toDos).map(boardId => (
