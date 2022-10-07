@@ -4,7 +4,7 @@ import {useSetRecoilState} from "recoil";
 import {toDoState} from "../atoms";
 import {useForm} from "react-hook-form";
 
-const AddToDosForm = styled.form`
+const AddBoardForm = styled.form`
   display: flex;
   max-width: 480px;
   width: 100%;
@@ -14,7 +14,7 @@ const AddToDosForm = styled.form`
   height: 20vh;
 `;
 
-const AddToDoText = styled.input`
+const AddBoardText = styled.input`
   padding: 10px 10px;
   border-radius: 5px;
   width: 350px;
@@ -27,20 +27,20 @@ interface IForm {
 export default function AddBoard() {
     const setToDos = useSetRecoilState(toDoState);
     const { register, setValue, handleSubmit } = useForm();
-    const addToDos = ({ addToDos }: IForm) => {
+    const addBoard = ({ addBoard }: IForm) => {
         setToDos((prevToDos) => {
-           const copyToDos = { ...prevToDos, [`${addToDos}`]: [] };
+           const copyToDos = { ...prevToDos, [`${addBoard}`]: [] };
            return {...copyToDos};
         });
-        setValue("addToDos", "");
+        setValue("addBoard", "");
     };
     return (
-        <AddToDosForm onSubmit={handleSubmit(addToDos)}>
-            <AddToDoText
-                {...register(`addToDos`,{required: true})}
+        <AddBoardForm onSubmit={handleSubmit(addBoard)}>
+            <AddBoardText
+                {...register(`addBoard`,{required: true})}
                 type={"text"}
-                placeholder={"input toDos"}
+                placeholder={"Add Board"}
             />
-        </AddToDosForm>
+        </AddBoardForm>
     );
 }

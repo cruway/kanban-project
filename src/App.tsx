@@ -2,9 +2,9 @@ import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import styled from "styled-components";
 import {toDoState} from "./atoms";
 import {useRecoilState} from "recoil";
-import Board from "./Components/Board";
 import React from "react";
 import AddBoard from "./Components/AddBoard";
+import BoardContents from "./Components/BoardContents";
 
 const Title = styled.div`
   margin: 10px;
@@ -12,29 +12,20 @@ const Title = styled.div`
   font-weight: 600;
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-  max-width: 900px;
-  width: 100%;
-  margin: 0 auto;
-  justify-content: center;
-  align-items: center;
-  height: 50vh;
-`;
-
-const Boards = styled.div`
-  display: grid;
-  width: 100%;
-  gap: 10px;
-  grid-template-columns: repeat(3, 1fr);
-`;
-
 function App() {
     const [toDos, setToDos] = useRecoilState(toDoState);
     const onDragEnd = (info: DropResult) => {
        const {destination, source} = info;
        if(!destination) return;
-       if(destination?.droppableId === source.droppableId) {
+       if(source.droppableId === "boards") {
+           setToDos((allBoards) => {
+               const copyBoard = Object.entries(allBoards);
+               const movingBoard = copyBoard[source.index];
+               copyBoard.splice(source.index, 1);
+               copyBoard.splice(destination.index, 0, movingBoard);
+               return Object.fromEntries(copyBoard);
+           });
+       } else if(destination?.droppableId === source.droppableId) {
            // same board movement.
            setToDos(allBoards => {
                const boardCopy = [...allBoards[source.droppableId]];
@@ -46,8 +37,7 @@ function App() {
                    [source.droppableId] : boardCopy
                };
            });
-       }
-        if(destination?.droppableId !== source.droppableId) {
+       } else if(destination?.droppableId !== source.droppableId) {
             setToDos((allBoards) => {
                 const sourceBoard = [...allBoards[source.droppableId]];
                 const taskObj = sourceBoard[source.index];
@@ -66,13 +56,7 @@ function App() {
         <DragDropContext onDragEnd={onDragEnd}>
             <Title>kuru kanban</Title>
             <AddBoard />
-            <Wrapper>
-                <Boards>
-                    {Object.keys(toDos).map(boardId => (
-                        <Board boardId={boardId} key={boardId} toDos={toDos[boardId]}/>
-                    ))}
-                </Boards>
-            </Wrapper>
+            <BoardContents toDos={toDos} />
         </DragDropContext>
     );
 }
