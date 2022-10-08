@@ -25,6 +25,7 @@ const Title = styled.h2`
 `;
 
 const AddText = styled.input`
+  border: none;
   border-radius: 5px;
   padding: 10px;
 `;
@@ -128,6 +129,7 @@ function Board({toDos, boardId, index}:IBoardProps) {
                                         index={index}
                                         toDoId={toDo.id}
                                         toDoText={toDo.text}
+                                        boardId={boardId}
                                     />
                                 ))}
                                 {magic.placeholder}
